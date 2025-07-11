@@ -13,7 +13,7 @@ cards_title: Card
 cards:
     - icon: ✨
       title: Hello
-      description: Wlcome to Gudupao's Astro-i18n Docs
+      description: Welcome to Gudupao's Astro-i18n Docs
 faq_title: FAQ
 faq_items:
     - question: Nothing
