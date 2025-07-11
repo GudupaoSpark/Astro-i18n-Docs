@@ -1,0 +1,92 @@
+site_name: Gudupao
+site_description: GudupaoSpark Docs
+
+
+plugins:
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: zh
+          name: 简体中文
+          build: true
+  - search
+  - include_dir_to_nav
+      
+extra_css:
+  - stylesheets/extra.css
+theme:
+  custom_dir: overrides
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  icon:
+    repo: fontawesome/brands/github
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - admonition
+  - pymdownx.details
+  - attr_list
+
+footer:
+  cr: Copyright &copy; 2023 - 2025 GudupaoSpark
+  links:
+    - Common:
+        - name: GudupaoSpark
+          url: https://gudupao.top
+        - name: GitHub
+          url: https://github.com/GudupaoSpark
+    - Other:
+        - name: GudupaoSpark Docs
+          url: https://docs.gudupao.top
+  links-zh:
+    - 常用链接:
+        - name: GudupaoSpark
+          url: https://gudupao.top
+        - name: GitHub
+          url: https://github.com/GudupaoSpark
+    - 其他链接:
+        - name: GudupaoSpark Docs
+          url: https://docs.gudupao.top

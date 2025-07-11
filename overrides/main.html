@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
+{% endblock %}
+{% block footer %}
+<style>
+.footer-container {
+    text-align: center;
+    padding: 2rem 1rem;
+    position: relative;
+    margin-top: 3rem;
+    background-color: var(--footer-bg);
+}
+.footer-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: -1;
+}
+.footer-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    mix-blend-mode: multiply;
+    z-index: -1;
+}
+.footer-links-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+}
+.footer-links-group {
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    min-width: 200px;
+    margin: 0 1rem;
+}
+.footer-links-group h3 {
+    margin: 1rem 0;
+    color: var(--md-default-fg-color);
+    font-size: 1.2rem;
+}
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+.footer-links li {
+    margin: 0.5rem 0;
+}
+.footer-links a {
+    color: var(--md-typeset-a-color);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 0.8rem;
+}
+.footer-links a:hover {
+    color: var(--md-accent-fg-color);
+}
+.footer-copyright {
+    margin-top: 2rem;
+    color: var(--md-default-fg-color--light);
+    font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+    .footer-links-group {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<footer>
+    <div class="footer-container">
+        {% set lang = config.theme.language %}
+        {% set links_key = 'links-zh' if lang == 'zh' else 'links' %}
+        {% for group in config.footer[links_key] %}
+        {% set pair = group.items() | list | first %}
+            <div class="footer-links-group">
+                <h3>{{ pair[0] }}</h3>
+                <ul class="footer-links">
+                    {% for link in pair[1] %}
+                        <li><a href="{{ link.url }}" target="_blank">{{ link.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+        <div class="footer-copyright">{{ config.footer.cr }}</div>
+    </div>
+</footer>
+{% endblock %}

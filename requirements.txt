@@ -1,0 +1,4 @@
+mkdocs-material
+mkdocs-include-dir-to-nav
+mkdocs-git-committers-plugin-2
+mkdocs-static-i18n

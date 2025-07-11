@@ -1,0 +1,496 @@
+{#-
+This file was automatically generated - do not edit
+-#}
+{% extends "main.html" %}
+{% block tabs %}
+<style>
+  :root {
+    --primary-color: #4a6bdf;
+    --secondary-color: #6c5ce7;
+    --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  }
+
+  .md-content{
+    max-height: 0;
+  }
+  .md-main{
+    max-height: 0;
+  }
+  
+  .md-header {
+    background: var(--gradient);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .md-main__inner {
+    margin: 0;
+    padding: 0;
+  }
+
+  @media screen and (min-width:60em) {
+    .md-sidebar--secondary {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width:76.25em) {
+    .md-sidebar--primary {
+      display: none;
+    }
+  }
+
+  /* Hero Section Enhancements */
+  .mdx-container {
+    background: var(--hero-bg);
+    color: var(--md-default-fg-color);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+
+  .mdx-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(128,128,128,0.5)" stroke-width="2"/></svg>');
+    background-size: 50px 50px;
+    background-position: 0 0;
+    opacity: 0.3;
+    animation: bgScroll 20s linear infinite;
+  }
+
+  @keyframes bgScroll {
+    100% {
+      background-position: 100% 100%;
+    }
+  }
+
+  .mdx-hero {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin: 0 auto 1.5rem;
+    display: block;
+  }
+
+  .mdx-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    color: var(--primary-color);
+    animation: fadeInDown 1s ease;
+  }
+
+  .mdx-hero p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    animation: fadeIn 1.5s ease;
+  }
+
+  .md-button {
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  /* Particle Background */
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Responsive Adjustments */
+  @media screen and (max-width: 768px) {
+    .mdx-hero h1 {
+      font-size: 2.5rem;
+    }
+    .mdx-hero p {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .mdx-hero h1 {
+      font-size: 2rem;
+    }
+    .mdx-hero p {
+      font-size: 1rem;
+    }
+    .md-button {
+      padding: 0.6rem 1.5rem;
+      margin: 0.3rem;
+    }
+  }
+
+  /* Button Hover Effects */
+  .mdx-hero__content a {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mdx-hero__content a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255,255,255,0.1);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .mdx-hero__content a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+
+  .md-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+<section class="mdx-container">
+  <div class="md-grid md-typeset">
+    <div class="mdx-hero">
+      <div class="mdx-hero__content">
+        {% if page.meta.logo %}
+        <img src="{{ page.meta.logo }}" alt="Logo" class="hero-logo">
+        {% endif %}
+        <h1>{{ config.site_name }}</h1>
+        <p>{{ page.meta.description }}</p>
+        {% for btn in page.meta.buttons %}
+        <a href="{{ btn.link | url }}" title="{{ btn.text | e }}"
+          class="md-button md-button--{{ btn.mode }}">
+          {{ btn.text }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Language Features Cards Section -->
+  <section class="features-section">
+    <div class="features-container">
+      <h2 class="features-title">{{ page.meta.cards_title }}</h2>
+      <div class="features-grid">
+        {% for card in page.meta.cards %}
+        <div class="feature-card">
+          <div class="feature-icon">{{ card.icon }}</div>
+          <h3>{{ card.title }}</h3>
+          <p>{{ card.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Features Section Styles */
+    .features-section {
+      padding: 4rem 1rem;
+      background: var(--md-default-bg-color);
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .features-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--md-default-fg-color);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--md-code-bg-color);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--md-default-fg-color);
+    }
+
+    .feature-card p {
+      color: var(--md-default-fg-color--light);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+  <div class="faq-container">
+    <h2 class="faq-title">{{ page.meta.faq_title }}</h2>
+    <div class="faq-grid">
+      {% for item in page.meta.faq_items %}
+      <details class="faq-item">
+        <summary class="faq-question">
+          {{ item.question }}
+          <span class="faq-toggle">+</span>
+        </summary>
+        <div class="faq-answer">{{ item.answer }}</div>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+  <style>
+    /* FAQ Section Styles */
+    .faq-section {
+      padding: 4rem 1rem;
+      background: var(--md-default-bg-color);
+      border-top: 1px solid var(--md-default-fg-color--lightest);
+    }
+
+    .faq-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .faq-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--md-default-fg-color);
+    }
+
+    .faq-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--md-code-bg-color);
+      padding: 0;
+      border-left: 4px solid var(--primary-color);
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem 1rem;
+      margin-top: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    
+    .faq-item[open] .faq-answer {
+      max-height: 1000px; /* 足够容纳最长内容 */
+    }
+
+    .faq-toggle {
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-toggle {
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item[open] .faq-question {
+      font-weight: bold;
+    }
+
+    .faq-question {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--md-default-fg-color);
+    }
+
+    .faq-answer {
+      color: var(--md-default-fg-color--light);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .faq-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+<!-- 引入GSAP动画库 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<script>
+document.querySelectorAll('.faq-item').forEach(item => {
+  const answer = item.querySelector('.faq-answer');
+  const toggle = item.querySelector('.faq-toggle');
+  
+  // 保存初始状态
+  gsap.set(answer, {
+    height: 0,
+    opacity: 0,
+    paddingBottom: 0
+  });
+  
+  // 添加点击事件而不是toggle事件
+  const question = item.querySelector('.faq-question');
+  question.addEventListener('click', function(e) {
+    e.preventDefault(); // 阻止默认行为
+    
+    const isOpening = !item.open;
+    
+    if (isOpening) {
+      item.open = true;
+      // 展开动画
+      gsap.to(answer, {
+        height: 'auto',
+        opacity: 1,
+        paddingBottom: '1rem',
+        scaleY: 1,
+        transformOrigin: 'top',
+        duration: .1,
+        ease: 'linear'
+      });
+      
+      // 旋转图标
+      gsap.to(toggle, {
+        rotation: 45,
+        duration: 0.3
+      });
+    } else {
+      // 折叠动画
+      gsap.to(answer, {
+        height: 0,
+        opacity: 0,
+        paddingBottom: 0,
+        scaleY: 0.8,
+        transformOrigin: 'top',
+        duration: .3,
+        ease: 'power2.in',
+        onComplete: () => {
+          item.open = false;
+        }
+      });
+      
+      // 旋转图标回原位
+      gsap.to(toggle, {
+        rotation: 0,
+        duration: 0.3
+      });
+    }
+  });
+});
+function copyToClipboard(button) {
+  // 直接使用按钮的文本内容
+  const text = button.innerText;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = button.innerText;
+    button.innerText = "{{ page.meta.copy_success }}";
+    
+    setTimeout(() => {
+      button.innerText = originalText;
+    }, 2000);
+  }).catch(err => {
+    console.error('error:', err);
+    button.innerText = 'error';
+    setTimeout(() => {
+      button.innerText = originalText;
+    }, 2000);
+  });
+}
+</script>
+{% endblock %}
+{% block content %}{% endblock %}

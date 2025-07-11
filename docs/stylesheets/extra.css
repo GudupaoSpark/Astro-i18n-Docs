@@ -1,0 +1,9 @@
+[data-md-color-scheme="default"] {
+    --footer-bg: #dddddd;
+    --hero-bg: #f5f5f5;
+}
+
+[data-md-color-scheme="slate"] {
+    --footer-bg: #222222;
+    --hero-bg: #333333;
+}
