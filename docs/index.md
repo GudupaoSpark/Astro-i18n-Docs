@@ -1,7 +1,7 @@
 ---
 template: home.html
 title: Home
-description: GudupaoSpark Docs
+description: Gudupao's Astro-i18n Docs
 buttons: 
   - text: Start
     link: /start
@@ -9,14 +9,14 @@ buttons:
   - text: About
     link: /about
     mode: default
-cards_title: test
+cards_title: Card
 cards:
-    - icon: 🐍
-      title: test
-      description: test
+    - icon: ✨
+      title: Hello
+      description: Wlcome to Gudupao's Astro-i18n Docs
 faq_title: FAQ
 faq_items:
-    - question: test
-      answer: test
-logo: /image.png
+    - question: Nothing
+      answer: Nothing
+logo: /image2.svg
 ---

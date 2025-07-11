@@ -1,6 +1,8 @@
-site_name: Gudupao
-site_description: GudupaoSpark Docs
+site_name: Astro-i18n
+site_description: Gudupao's Astro-i18n Docs
 
+repo_url: https://github.com/GudupaoSpark/Astro-i18n
+repo_name: Astro-i18n
 
 plugins:
   - i18n:
@@ -15,10 +17,15 @@ plugins:
           build: true
   - search
   - include_dir_to_nav
-      
+  - git-committers:
+      repository: GudupaoSpark/Astro-i18n
+      branch: main
+
 extra_css:
   - stylesheets/extra.css
 theme:
+  logo: image2.svg
+  favicon: image2.svg
   custom_dir: overrides
   name: material
   palette:
@@ -71,7 +78,7 @@ markdown_extensions:
   - attr_list
 
 footer:
-  cr: Copyright &copy; 2023 - 2025 GudupaoSpark
+  cr: Copyright &copy; 2023 - 2025 Gudupao Spark Inc.
   links:
     - Common:
         - name: GudupaoSpark

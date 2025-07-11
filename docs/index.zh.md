@@ -1,7 +1,7 @@
 ---
 template: home.html
 title: 主页
-description: GudupaoSpark Docs
+description: 由Gudupao开发的Astro-i18n插件的文档
 buttons: 
   - text: 开始
     link: /start
@@ -9,14 +9,14 @@ buttons:
   - text: 关于
     link: /about
     mode: default
-cards_title: 测试
+cards_title: 小卡片
 cards:
-    - icon: 🐍
-      title: 测试
-      description: 测试
+    - icon: ✨
+      title: 你好
+      description: 本文档是关于Gudupao的Astro-i18n插件的文档
 faq_title: 常见问题
 faq_items:
-    - question: 测试
-      answer: 测试
-logo: /image.png
+    - question: 没有东西
+      answer: 没有东西
+logo: /image2.svg
 ---
