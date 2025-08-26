@@ -5,77 +5,88 @@ description: 快速开始
 
 # Astro-i18n
 
-## 安装
-
-```bash
-pnpm add @gudupao/astro-i18n
-```
+> **注意**: 安装说明已移至 [安装](installation.zh-hans.md)。
 
 ## 使用方法
 
-### 1. 在Astro配置中添加插件
+有关详细的配置选项，请参见 [配置](configuration.zh-hans.md)。
 
-```typescript
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import { astroI18nPlugin } from '@gudupao/astro-i18n';
-
-export default defineConfig({
-  integrations: [
-    astroI18nPlugin({
-      localesDir: './locales',      // 语言文件目录，默认为'locales'
-      fallbackLang: 'en',        // 后备语言，默认为'en'
-      autoRedirect: true         // 是否自动重定向到用户语言路径，默认为true
-    })
-  ]
-});
-```
-
-### 2. 创建语言文件
-
-在项目根目录创建`locales`文件夹，并添加语言文件：
-
-```
-/locales
-  /en.json      # 英文翻译
-  /zh.json      # 中文翻译
-```
-
-### 3. 在页面中使用
+### Astro
 
 ```astro
 ---
-const { lang } = Astro.params;
-const { t } = Astro.locals;
+import { getTranslator } from '@gudupao/astro-i18n';
+
+// 从参数获取语言
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
 ---
 
-<html lang={lang}>
-  <head>
-    <title>{t('welcome')}</title>
-  </head>
-  <body>
-    <h1>{t('hello')}</h1>
-    <p>{t('language')}: {lang}</p>
-  </body>
-</html>
+<div>
+  <h1>Astro Test: {t('hello')} {t('123.a')}</h1>
+</div>
 ```
-## 语言切换器示例（包含Cookies检测设置方法）
+
+### React
+
+```jsx
+import React from 'react';
+import { createClientTranslator } from '@gudupao/astro-i18n';
+import type { Translations } from '@gudupao/astro-i18n';
+
+const TestComponent = ({ translations }: { translations: Translations }) => {
+  const t = createClientTranslator(translations);
+  
+ return (
+    <div>
+      <h1>React Test: {t('hello')} {t('123.a')}</h1>
+    </div>
+  );
+};
+
+export default TestComponent;
+```
+
+### Vue
+
+```vue
+<template>
+  <div>
+    <h1>Vue Test: {{ t('hello') }} {{ t('123.a') }}</h1>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { createClientTranslator } from '@gudupao/astro-i18n';
+import type { Translations } from '@gudupao/astro-i18n';
+
+interface Props {
+  translations: Translations;
+}
+
+const props = defineProps<Props>();
+const t = createClientTranslator(props.translations);
+</script>
+```
+
+## 语言切换器示例
+
+### 有路径版本
 
 ```astro
 ---
-
 interface Props {
   lang: string;
 }
 
 const { lang } = Astro.props;
-
 ---
+
 <script is:inline>
   function switchLanguage(language) {
-    // 設置語言 Cookie
+    // 设置语言 Cookie
     document.cookie = `lang=${language}; path=/; max-age=31536000; samesite=lax`;
-    console.log('[LanguageSwitcher] 設置語言 Cookie:', language);
+    console.log('[LanguageSwitcher] 设置语言 Cookie:', language);
     
     const urlParts = window.location.pathname.split('/');
     urlParts[1] = language;
@@ -129,14 +140,137 @@ const { lang } = Astro.props;
 </style>
 ```
 
-## 特性
+### 无路径版本
 
-- 支持URL路径语言代码 (`/en/about`, `/zh/about`)
-- 自动语言检测（从URL、Cookie、Accept-Language头）
-- 自动重定向到用户首选语言
-- 支持参数化翻译
-- 支持多级目录结构的翻译文件
+```astro
+---
+// 获取所有可用的语言
+const { getAvailableLanguages } = await import('@gudupao/astro-i18n');
+const availableLanguages = getAvailableLanguages();
 
-## 许可证
+interface Props {
+  pathBasedRouting?: boolean; // 是否使用路径基于路由的模式
+}
 
-MIT
+const { pathBasedRouting = true } = Astro.props;
+
+// 检测当前语言的函数
+function detectCurrentLanguage() {
+  // 首先检查 URL 参数
+  const urlParams = new URLSearchParams(Astro.url.search);
+  const langParam = urlParams.get('lang');
+  if (langParam) return langParam;
+
+  // 然后检查 Cookie
+  const cookies = Astro.request.headers.get('cookie');
+  if (cookies) {
+    const cookieObj = Object.fromEntries(
+      cookies.split(';').map(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        return [name, decodeURIComponent(value)];
+      })
+    );
+    if (cookieObj.lang) return cookieObj.lang;
+ }
+
+  // 返回默认语言
+  return 'en';
+}
+
+// 获取当前语言
+const currentLang = detectCurrentLanguage();
+---
+
+<div class="language-switcher">
+  <h3>语言切换器 (新版本)</h3>
+  <p>当前模式: {pathBasedRouting ? '路径基于路由' : '无路径基于路由'}</p>
+  <div class="switcher-buttons">
+    {availableLanguages.map((language) => (
+      <button
+        data-lang={language}
+        class={language === currentLang ? 'active' : ''}
+        onclick={`switchLanguage('${language}', ${pathBasedRouting})`}
+      >
+        {language === 'en' && 'English'}
+        {language === 'zh' && '中文'}
+        {language === 'jp' && '日本語'}
+        {language !== 'en' && language !== 'zh' && language !== 'jp' && language}
+      </button>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  // 切换语言的函数
+  function switchLanguage(language, pathBasedRouting) {
+    if (pathBasedRouting) {
+      // 路径基于路由的模式
+      // 设置语言 Cookie
+      document.cookie = `lang=${language}; path=/; max-age=31536000; samesite=lax`;
+      console.log('[LanguageSwitcher] 设置语言 Cookie:', language);
+      
+      const urlParts = window.location.pathname.split('/');
+      urlParts[1] = language;
+      window.location.href = urlParts.join('/');
+    } else {
+      // 无路径基于路由的模式
+      // 设置语言 Cookie
+      document.cookie = `lang=${language}; path=/; max-age=31536000; samesite=lax`;
+      // 设置 localStorage
+      localStorage.setItem('lang', language);
+      // 重新加载页面以应用新语言
+      window.location.reload();
+    }
+  }
+</script>
+
+<style>
+.language-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9;
+}
+
+.switcher-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.language-switcher button {
+  padding: 8px 12px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-switcher button:hover {
+  background: #e0e0e0;
+}
+
+.language-switcher button.active {
+  background: #007bff;
+  color: white;
+}
+
+.language-switcher h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.language-switcher p {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+</style>
+
+```

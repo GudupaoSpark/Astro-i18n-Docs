@@ -6,78 +6,88 @@ description: Quick start
 
 # Astro-i18n
 
-## Installation
-
-```bash
-pnpm add @gudupao/astro-i18n
-```
+> **Note**: Installation instructions have been moved to [Installation](installation.md).
 
 ## Usage
 
-### 1. Add the plugin in your Astro configuration
+For detailed configuration options, please see [Configuration](configuration.md).
 
-```typescript
-// astro.config.mjs
-import { defineConfig } from 'astro/config';
-import { astroI18nPlugin } from '@gudupao/astro-i18n';
-
-export default defineConfig({
-  integrations: [
-    astroI18nPlugin({
-      localesDir: './locales',      // Directory for locale files (default: 'locales')
-      fallbackLang: 'en',           // Fallback language (default: 'en')
-      autoRedirect: true            // Automatically redirect to user's language (default: true)
-    })
-  ]
-});
-```
-
-### 2. Create locale files
-
-Create a `locales` folder in your project root and add your language files:
-
-```
-/locales
-  /en.json      # English translations
-  /zh.json      # Chinese translations
-```
-
-### 3. Use in your pages
+### Astro
 
 ```astro
 ---
-const { lang } = Astro.params;
-const { t } = Astro.locals;
+import { getTranslator } from '@gudupao/astro-i18n';
+
+// Get language from params
+const lang = Astro.params.lang || 'en';
+const t = getTranslator(lang);
 ---
 
-<html lang={lang}>
-  <head>
-    <title>{t('welcome')}</title>
-  </head>
-  <body>
-    <h1>{t('hello')}</h1>
-    <p>{t('language')}: {lang}</p>
-  </body>
-</html>
+<div>
+  <h1>Astro Test: {t('hello')} {t('123.a')}</h1>
+</div>
 ```
 
-## Language Switcher Example (with cookie detection)
+### React
+
+```jsx
+import React from 'react';
+import { createClientTranslator } from '@gudupao/astro-i18n';
+import type { Translations } from '@gudupao/astro-i18n';
+
+const TestComponent = ({ translations }: { translations: Translations }) => {
+  const t = createClientTranslator(translations);
+  
+  return (
+    <div>
+      <h1>React Test: {t('hello')} {t('123.a')}</h1>
+    </div>
+  );
+};
+
+export default TestComponent;
+```
+
+### Vue
+
+```vue
+<template>
+ <div>
+    <h1>Vue Test: {{ t('hello') }} {{ t('123.a') }}</h1>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { createClientTranslator } from '@gudupao/astro-i18n';
+import type { Translations } from '@gudupao/astro-i18n';
+
+interface Props {
+  translations: Translations;
+}
+
+const props = defineProps<Props>();
+const t = createClientTranslator(props.translations);
+</script>
+```
+
+## Language Switcher Examples
+
+### Path-based Version
 
 ```astro
 ---
-
 interface Props {
   lang: string;
 }
 
 const { lang } = Astro.props;
-
 ---
+
 <script is:inline>
   function switchLanguage(language) {
-    // Set language cookie
+    // Set language Cookie
     document.cookie = `lang=${language}; path=/; max-age=31536000; samesite=lax`;
-    console.log('[LanguageSwitcher] Set language cookie:', language);
+    console.log('[LanguageSwitcher] Set language Cookie:', language);
     
     const urlParts = window.location.pathname.split('/');
     urlParts[1] = language;
@@ -101,7 +111,7 @@ const { lang } = Astro.props;
   >
     中文
   </button>
-  <button
+    <button
     onclick="switchLanguage('jp')"
     class={lang === 'jp' ? 'active' : ''}
   >
@@ -131,15 +141,137 @@ const { lang } = Astro.props;
 </style>
 ```
 
-## Features
+### Path-less Version
 
-* Supports language codes in URL paths (`/en/about`, `/zh/about`)
-* Automatic language detection (from URL, Cookie, or Accept-Language header)
-* Auto-redirects to the user's preferred language
-* Supports parameterized translation
-* Supports multi-level translation file structure
+```astro
+---
+// Get all available languages
+const { getAvailableLanguages } = await import('@gudupao/astro-i18n');
+const availableLanguages = getAvailableLanguages();
 
-## License
+interface Props {
+  pathBasedRouting?: boolean; // Whether to use path-based routing mode
+}
 
-MIT
+const { pathBasedRouting = true } = Astro.props;
 
+// Function to detect current language
+function detectCurrentLanguage() {
+  // First check URL parameters
+  const urlParams = new URLSearchParams(Astro.url.search);
+  const langParam = urlParams.get('lang');
+  if (langParam) return langParam;
+
+  // Then check Cookie
+  const cookies = Astro.request.headers.get('cookie');
+  if (cookies) {
+    const cookieObj = Object.fromEntries(
+      cookies.split(';').map(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        return [name, decodeURIComponent(value)];
+      })
+    );
+    if (cookieObj.lang) return cookieObj.lang;
+ }
+
+  // Return default language
+  return 'en';
+}
+
+// Get current language
+const currentLang = detectCurrentLanguage();
+---
+
+<div class="language-switcher">
+  <h3>Language Switcher (New Version)</h3>
+  <p>Current Mode: {pathBasedRouting ? 'Path-based Routing' : 'Path-less Routing'}</p>
+  <div class="switcher-buttons">
+    {availableLanguages.map((language) => (
+      <button
+        data-lang={language}
+        class={language === currentLang ? 'active' : ''}
+        onclick={`switchLanguage('${language}', ${pathBasedRouting})`}
+      >
+        {language === 'en' && 'English'}
+        {language === 'zh' && '中文'}
+        {language === 'jp' && '日本語'}
+        {language !== 'en' && language !== 'zh' && language !== 'jp' && language}
+      </button>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  // Function to switch language
+  function switchLanguage(language, pathBasedRouting) {
+    if (pathBasedRouting) {
+      // Path-based routing mode
+      // Set language Cookie
+      document.cookie = `lang=${language}; path=/; max-age=31536000; samesite=lax`;
+      console.log('[LanguageSwitcher] Set language Cookie:', language);
+      
+      const urlParts = window.location.pathname.split('/');
+      urlParts[1] = language;
+      window.location.href = urlParts.join('/');
+    } else {
+      // Path-less routing mode
+      // Set language Cookie
+      document.cookie = `lang=${language}; path=/; max-age=31536000; samesite=lax`;
+      // Set localStorage
+      localStorage.setItem('lang', language);
+      // Reload the page to apply the new language
+      window.location.reload();
+    }
+  }
+</script>
+
+<style>
+.language-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.switcher-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.language-switcher button {
+  padding: 8px 12px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-switcher button:hover {
+  background: #e0e0e0;
+}
+
+.language-switcher button.active {
+  background: #007bff;
+  color: white;
+}
+
+.language-switcher h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.language-switcher p {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+</style>
+
+```
