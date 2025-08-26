@@ -6,11 +6,11 @@ description: Quick start
 
 # Astro-i18n
 
-> **Note**: Installation instructions have been moved to [Installation](installation.md).
+> **Note**: Installation instructions have been moved to [Installation](installation).
 
 ## Usage
 
-For detailed configuration options, please see [Configuration](configuration.md).
+For detailed configuration options, please see [Configuration](configuration).
 
 ### Astro
 

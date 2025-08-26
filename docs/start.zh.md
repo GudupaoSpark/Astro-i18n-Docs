@@ -5,11 +5,11 @@ description: 快速开始
 
 # Astro-i18n
 
-> **注意**: 安装说明已移至 [安装](installation.zh-hans.md)。
+> **注意**: 安装说明已移至 [安装](installation)。
 
 ## 使用方法
 
-有关详细的配置选项，请参见 [配置](configuration.zh-hans.md)。
+有关详细的配置选项，请参见 [配置](configuration)。
 
 ### Astro
 
